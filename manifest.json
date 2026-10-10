@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "LeetCode C++ AutoSuggest Pro",
+  "version": "5.0.0",
+  "description": "Fluid C++ autocomplete for LeetCode — problems & contests",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "https://leetcode-cn.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://leetcode.com/problems/*",
+        "https://leetcode.com/contest/*",
+        "https://leetcode.com/submissions/*",
+        "https://leetcode-cn.com/problems/*",
+        "https://leetcode-cn.com/contest/*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

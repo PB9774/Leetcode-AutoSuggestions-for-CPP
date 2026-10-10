@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:600px;overflow:hidden}
+body{width:320px;background:#0a0a14;color:#e2e8f0;font-family:-apple-system,'Segoe UI',sans-serif;font-size:13px;user-select:none;display:flex;flex-direction:column}
+
+/* ── Header ── */
+.hdr{background:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 100%);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.hico{width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.htitle{font-size:14px;font-weight:700;color:#fff;line-height:1.2}
+.hsub{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px}
+
+/* ── Master toggle row ── */
+.master{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
+.master-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#e2e8f0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;flex-shrink:0}
+.status-dot.off{background:#ef4444;animation:none}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{opacity:.7;box-shadow:0 0 0 4px rgba(74,222,128,0)}}
+
+/* ── Tabs ── */
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.07);background:#0a0a14}
+.tab{flex:1;padding:9px 4px;text-align:center;font-size:11px;font-weight:600;color:rgba(148,163,184,.6);cursor:pointer;transition:all .15s;border-bottom:2px solid transparent;letter-spacing:.3px}
+.tab:hover{color:#94a3b8}
+.tab.active{color:#818cf8;border-bottom-color:#818cf8}
+
+/* ── Tab panels ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── Section ── */
+.sec-title{font-size:10px;font-weight:700;color:rgba(100,116,139,.8);text-transform:uppercase;letter-spacing:.9px;padding:6px 16px 4px}
+
+/* ── Toggle row ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;transition:background .1s;gap:12px}
+.toggle-row:hover{background:rgba(255,255,255,.03);border-radius:6px}
+.toggle-info{flex:1;min-width:0}
+.toggle-label{font-size:12.5px;color:#cbd5e1;font-weight:500}
+.toggle-desc{font-size:10.5px;color:rgba(100,116,139,.8);margin-top:1px;line-height:1.4}
+
+/* ── Switch ── */
+.switch{position:relative;width:36px;height:20px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.slider{position:absolute;inset:0;background:rgba(71,85,105,.5);border-radius:20px;transition:.2s;cursor:pointer;border:1px solid rgba(255,255,255,.08)}
+.slider:before{content:"";position:absolute;width:14px;height:14px;left:2px;top:2px;background:#94a3b8;border-radius:50%;transition:.2s}
+input:checked+.slider{background:rgba(99,102,241,.7);border-color:rgba(129,140,248,.4)}
+input:checked+.slider:before{transform:translateX(16px);background:#fff}
+input:focus+.slider{box-shadow:0 0 0 2px rgba(99,102,241,.3)}
+
+/* ── Slider (range) row ── */
+.range-row{padding:8px 16px 10px}
+.range-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.range-label{font-size:12.5px;color:#cbd5e1;font-weight:500}
+.range-val{font-size:12px;font-weight:700;color:#818cf8;font-family:monospace}
+.range-desc{font-size:10.5px;color:rgba(100,116,139,.8);margin-bottom:6px}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;background:rgba(71,85,105,.4);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#818cf8;cursor:pointer;border:2px solid #1e1e3f;box-shadow:0 0 0 1px rgba(129,140,248,.3)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#818cf8;cursor:pointer;border:2px solid #1e1e3f}
+
+/* ── Divider ── */
+.div{height:1px;background:rgba(255,255,255,.05);margin:4px 16px}
+
+/* ── Shortcut grid ── */
+.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px 16px 4px}
+.key-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:7px 10px}
+.kbadge{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:1px 6px;font-size:10px;font-family:monospace;color:#a5b4fc;margin-bottom:3px}
+.kdesc{font-size:10px;color:#64748b}
+
+/* ── Stats ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:6px 16px 4px}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 10px;text-align:center}
+.stat-n{font-size:18px;font-weight:800;color:#818cf8;font-family:monospace}
+.stat-l{font-size:10px;color:#64748b;margin-top:2px}
+
+/* ── Badge row ── */
+.badge-row{display:flex;flex-wrap:wrap;gap:4px;padding:4px 16px 8px}
+.cbadge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.c-ds     {background:rgba(29,78,216,.4);  color:#93c5fd}
+.c-algo   {background:rgba(6,95,70,.4);    color:#6ee7b7}
+.c-math   {background:rgba(124,58,237,.4); color:#c4b5fd}
+.c-snippet{background:rgba(146,64,14,.4);  color:#fcd34d}
+.c-var    {background:rgba(190,24,93,.4);  color:#f9a8d4}
+.c-string {background:rgba(14,116,144,.4); color:#67e8f9}
+.c-local  {background:rgba(20,83,45,.4);   color:#86efac}
+.c-inc    {background:rgba(55,65,81,.4);   color:#d1d5db}
+
+/* ── Footer ── */
+.footer{padding:10px 16px;text-align:center;font-size:10px;color:#1e293b;border-top:1px solid rgba(255,255,255,.04)}
+
+/* ── Saved toast ── */
+.toast{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:11px;padding:5px 14px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.panels-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 0 8px}
+.panels-scroll::-webkit-scrollbar{width:3px}
+.panels-scroll::-webkit-scrollbar-track{background:transparent}
+.panels-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hico">⚡</div>
+  <div>
+    <div class="htitle">C++ AutoSuggest Pro</div>
+    <div class="hsub">LeetCode · Contests · Submissions</div>
+  </div>
+</div>
+
+<!-- Master toggle -->
+<div class="master">
+  <div class="master-label">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusLabel">Extension Active</span>
+  </div>
+  <label class="switch">
+    <input type="checkbox" id="masterToggle" checked>
+    <span class="slider"></span>
+  </label>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-tab="features">Features</div>
+  <div class="tab" data-tab="appearance">Appearance</div>
+  <div class="tab" data-tab="info">Info</div>
+</div>
+
+<div class="panels-scroll">
+<!-- ── FEATURES TAB ── -->
+<div class="panel active" id="tab-features">
+
+  <div class="sec-title">Suggestions</div>
+
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-label">STL &amp; Snippet Database</div>
+      <div class="toggle-desc">100+ C++ algorithms, data structures and templates</div>
+    </div>
+    <label class="switch"><input type="checkbox" data-key="stlSuggestions" checked><span class="slider"></span></label>
+  </div>
+
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-label">In-file Variable Suggestions</div>
+      <div class="toggle-desc">Suggests variable names you've already typed in this file</div>
+    </div>
+    <label class="switch"><input type="checkbox" data-key="userVars" checked><span class="slider"></span></label>
+  </div>
+
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-label">Auto-trigger on Typing</div>
+      <div class="toggle-desc">Show suggestions automatically as you type</div>
+    </div>
+    <label class="switch"><input type="checkbox" data-key="autoTrigger" checked><span class="slider"></span></label>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-title">Display</div>
+
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-label">Complexity Tooltip</div>
+      <div class="toggle-desc">Show O() time &amp; space complexity when hovering a suggestion</div>
+    </div>
+    <label class="switch"><input type="checkbox" data-key="complexityTooltip" checked><span class="slider"></span></label>
+  </div>
+
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-label">Highlight Matched Characters</div>
+      <div class="toggle-desc">Bold the letters in each suggestion that matched your input</div>
+    </div>
+    <label class="switch"><input type="checkbox" data-key="highlightMatch" checked><span class="slider"></span></label>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-title">Suggestion Limit</div>
+
+  <div class="range-row">
+    <div class="range-header">
+      <span class="range-label">Max suggestions shown</span>
+      <span class="range-val" id="maxSugVal">12</span>
+    </div>
+    <div class="range-desc">More results = more scrolling. 12 is the sweet spot for most screens.</div>
+    <input type="range" id="maxSugSlider" min="4" max="20" step="2" value="12">
+  </div>
+
+</div>
+
+<!-- ── APPEARANCE TAB ── -->
+<div class="panel" id="tab-appearance">
+
+  <div class="sec-title">Dropdown Opacity</div>
+  <div class="range-row">
+    <div class="range-header">
+      <span class="range-label">Background opacity</span>
+      <span class="range-val" id="opacityVal">85%</span>
+    </div>
+    <div class="range-desc">Lower = more translucent / frosted-glass. Higher = more solid.</div>
+    <input type="range" id="opacitySlider" min="40" max="100" step="5" value="85">
+  </div>
+
+  <!-- live preview -->
+  <div style="margin:4px 16px 10px;border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.1);transition:background .2s" id="previewBox">
+    <div style="font-size:10px;color:rgba(148,163,184,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">Preview</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;background:rgba(99,102,241,.25)">
+      <span style="font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;background:rgba(6,95,70,.5);color:#6ee7b7;border:1px solid rgba(16,185,129,.3)">Algo</span>
+      <span style="font-size:12px;color:#e2e8f0;font-family:monospace;flex:1">sort(begin,end)</span>
+      <span style="font-size:10px;color:rgba(148,163,184,.5)">O(n log n)</span>
+    </div>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-title">Keyboard Shortcuts</div>
+  <div class="key-grid">
+    <div class="key-card"><div class="kbadge">↑ ↓</div><div class="kdesc">Navigate list</div></div>
+    <div class="key-card"><div class="kbadge">Enter / Tab</div><div class="kdesc">Insert snippet</div></div>
+    <div class="key-card"><div class="kbadge">Esc</div><div class="kdesc">Dismiss</div></div>
+    <div class="key-card"><div class="kbadge">Type 1+ chars</div><div class="kdesc">Auto-trigger</div></div>
+  </div>
+
+</div>
+
+<!-- ── INFO TAB ── -->
+<div class="panel" id="tab-info">
+
+  <div class="sec-title">Library Stats</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-n">19</div><div class="stat-l">Data Structures</div></div>
+    <div class="stat-card"><div class="stat-n">17</div><div class="stat-l">STL Algorithms</div></div>
+    <div class="stat-card"><div class="stat-n">20</div><div class="stat-l">Snippets</div></div>
+    <div class="stat-card"><div class="stat-n">55</div><div class="stat-l">Complexity Hints</div></div>
+    <div class="stat-card"><div class="stat-n">100+</div><div class="stat-l">Total Entries</div></div>
+    <div class="stat-card"><div class="stat-n">Live</div><div class="stat-l">User Vars</div></div>
+  </div>
+
+  <div class="div" style="margin-top:8px"></div>
+  <div class="sec-title">Categories</div>
+  <div class="badge-row">
+    <span class="cbadge c-ds">DS</span>
+    <span class="cbadge c-algo">Algo</span>
+    <span class="cbadge c-math">Math</span>
+    <span class="cbadge c-snippet">Snippet</span>
+    <span class="cbadge c-var">Var</span>
+    <span class="cbadge c-string">String</span>
+    <span class="cbadge c-local">Local</span>
+    <span class="cbadge c-inc">Inc</span>
+  </div>
+
+  <div class="div"></div>
+  <div class="sec-title">Quick Trigger Examples</div>
+  <div style="padding:4px 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">bfs</span> → BFS template</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">dijk</span> → Dijkstra</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">dsu</span> → Union-Find</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">seg</span> → Segment tree</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">dp2</span> → 2D DP table</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">pq</span> → priority_queue</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">freq</span> → Freq map</div>
+    <div style="font-size:11px;color:#64748b"><span style="color:#818cf8;font-family:monospace">bits</span> → #include all</div>
+  </div>
+
+</div>
+
+</div><!-- /panels-scroll -->
+<div class="footer">v5.0 · Settings auto-saved</div>
+<div class="toast" id="toast">✓ Saved</div>
+
+<script>
+const DEFAULTS = {
+  enabled:true, stlSuggestions:true, userVars:true,
+  complexityTooltip:true, highlightMatch:true, autoTrigger:true,
+  maxSuggestions:12, dropdownOpacity:85
+};
+
+// ── Tab switching ──────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Load settings ──────────────────────────────────────────────
+chrome.storage.sync.get(DEFAULTS, vals=>{
+  // master
+  document.getElementById('masterToggle').checked = vals.enabled;
+  updateMasterUI(vals.enabled);
+
+  // toggles
+  document.querySelectorAll('input[data-key]').forEach(el=>{
+    el.checked = vals[el.dataset.key] !== false;
+  });
+
+  // ranges
+  const ms = vals.maxSuggestions || 12;
+  document.getElementById('maxSugSlider').value = ms;
+  document.getElementById('maxSugVal').textContent = ms;
+
+  const op = vals.dropdownOpacity || 85;
+  document.getElementById('opacitySlider').value = op;
+  document.getElementById('opacityVal').textContent = op + '%';
+  updatePreview(op);
+});
+
+// ── Master toggle ──────────────────────────────────────────────
+document.getElementById('masterToggle').addEventListener('change', function(){
+  const on = this.checked;
+  updateMasterUI(on);
+  save('enabled', on);
+});
+
+function updateMasterUI(on){
+  const dot = document.getElementById('statusDot');
+  const lbl = document.getElementById('statusLabel');
+  if(on){ dot.classList.remove('off'); lbl.textContent='Extension Active'; }
+  else  { dot.classList.add('off');    lbl.textContent='Extension Paused'; }
+}
+
+// ── Feature toggles ───────────────────────────────────────────
+document.querySelectorAll('input[data-key]').forEach(el=>{
+  el.addEventListener('change', ()=> save(el.dataset.key, el.checked));
+});
+
+// ── Max suggestions slider ────────────────────────────────────
+const msSlider = document.getElementById('maxSugSlider');
+msSlider.addEventListener('input', ()=>{
+  document.getElementById('maxSugVal').textContent = msSlider.value;
+});
+msSlider.addEventListener('change', ()=> save('maxSuggestions', +msSlider.value));
+
+// ── Opacity slider ────────────────────────────────────────────
+const opSlider = document.getElementById('opacitySlider');
+opSlider.addEventListener('input', ()=>{
+  const v = +opSlider.value;
+  document.getElementById('opacityVal').textContent = v + '%';
+  updatePreview(v);
+});
+opSlider.addEventListener('change', ()=> save('dropdownOpacity', +opSlider.value));
+
+function updatePreview(op){
+  const a = op/100;
+  const r=Math.round(15+(1-a)*10),g=r,b=Math.round(28+(1-a)*10);
+  document.getElementById('previewBox').style.background=`rgba(${r},${g},${b},${a})`;
+}
+
+// ── Save helper ───────────────────────────────────────────────
+function save(key, val){
+  chrome.storage.sync.set({[key]: val}, ()=>{
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1200);
+  });
+}
+</script>
+</body>
+</html>

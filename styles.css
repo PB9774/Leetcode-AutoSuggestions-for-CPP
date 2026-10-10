@@ -1,0 +1,68 @@
+/* ── LeetCode C++ AutoSuggest Pro v5 — styles.css ── */
+
+#lc-cpp-dropdown {
+  display: none;
+  position: fixed;
+  z-index: 2147483647;
+  width: 460px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(15,15,28,0.85);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06);
+  font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono',monospace;
+  font-size: 12.5px;
+  padding: 5px;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+#lc-cpp-dropdown::-webkit-scrollbar{width:4px}
+#lc-cpp-dropdown::-webkit-scrollbar-track{background:transparent}
+#lc-cpp-dropdown::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
+
+.lc-item{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:8px;cursor:pointer;min-width:0;transition:background 0.08s;}
+.lc-item:hover{background:rgba(255,255,255,0.07)}
+.lc-item.lc-active{background:rgba(99,102,241,0.28);outline:1px solid rgba(129,140,248,0.45)}
+
+.lc-badge{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:4px;text-transform:uppercase;width:48px;text-align:center;box-sizing:border-box;opacity:.92}
+.lc-cat-ds     {background:rgba(29,78,216,.5); color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+.lc-cat-algo   {background:rgba(6,95,70,.5);   color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
+.lc-cat-math   {background:rgba(124,58,237,.5); color:#c4b5fd;border:1px solid rgba(167,139,250,.3)}
+.lc-cat-snippet{background:rgba(146,64,14,.5);  color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.lc-cat-var    {background:rgba(190,24,93,.5);  color:#f9a8d4;border:1px solid rgba(236,72,153,.3)}
+.lc-cat-string {background:rgba(14,116,144,.5); color:#67e8f9;border:1px solid rgba(6,182,212,.3)}
+.lc-cat-inc    {background:rgba(55,65,81,.5);   color:#d1d5db;border:1px solid rgba(107,114,128,.3)}
+.lc-cat-local  {background:rgba(20,83,45,.5);   color:#86efac;border:1px solid rgba(34,197,94,.3)}
+
+.lc-label{flex:1;color:#e2e8f0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.lc-label mark.lc-hl{background:transparent;color:#fbbf24;font-weight:700;text-decoration:underline;text-decoration-color:rgba(251,191,36,.4)}
+.lc-detail{flex-shrink:0;color:rgba(148,163,184,.7);font-size:10.5px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:-apple-system,'Segoe UI',sans-serif}
+
+/* complexity O badge on item */
+.lc-cx-tag{flex-shrink:0;font-size:9px;font-weight:800;color:rgba(251,191,36,.7);font-family:monospace;margin-left:2px;opacity:.8}
+
+/* ── Complexity tooltip ── */
+#lc-cx-tooltip{
+  display:none;position:fixed;z-index:2147483646;
+  width:210px;
+  background:rgba(12,12,24,0.88);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:10px;
+  padding:10px 12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);
+  font-family:-apple-system,'Segoe UI',sans-serif;
+  font-size:12px;
+  pointer-events:none;
+}
+.lc-cx-head{font-size:9px;font-weight:700;color:rgba(148,163,184,.6);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.lc-cx-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.lc-cx-k{color:rgba(148,163,184,.7);font-size:11px}
+.lc-cx-v{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+.lc-cx-note{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);color:rgba(148,163,184,.6);font-size:10.5px;line-height:1.5}
